@@ -36,7 +36,7 @@ Count_Index = 0
 Fix = 2
 Its_InProgress = false
 ItsOnFocused_StatusId = false
-ShowID_onTextBox = nil
+ShowID_onTextBox = ""
 IntCount_Index = Count_Index
 
 _G.CustomTrans_4Fun, _G.CustomColor3_4Fun, _G.CustomButton_Text = {}, {}, {}
