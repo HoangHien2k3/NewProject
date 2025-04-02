@@ -27,8 +27,10 @@ _HiddenCommands = {
 
 HoangHienScript_Folder = "HoangHien_Script"
 Content_Folder = "Animations"
-ContentName_CheckerII = "<+" .. game.GameId .. "<×" .. game.PlaceId .. ">> Content Checker.json"
-Content_Name = "<" .. _PLR.Name .. "> Content.txt"
+-- ContentName_CheckerII = "<+" .. game.GameId .. "<×" .. game.PlaceId .. ">> Content Checker.json"
+-- Content_Name = "<" .. _PLR.Name .. "> Content.txt"
+ContentName_CheckerII = "TableCheckIfAlreadyExist.json"
+Content_Name = "AnimationId Saved.txt"
 Content_Text = "☆ AnimationId it's auto Saved into This file Content ☆ \n Emote/AnimationId: Auto Listed Below !"
 
 Content_newData = nil
