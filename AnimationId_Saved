@@ -31,11 +31,11 @@ Content_Folder = "Animations"
 -- Content_Name = "<" .. _PLR.Name .. "> Content.txt"
 ContentName_CheckerII = "TableCheckIfAlreadyExist.json"
 Content_Name = "AnimationId Saved.txt"
-Content_Text = "☆ AnimationId it's auto Saved into This file Content ☆ \n Emote/AnimationId: Auto Listed Below !"
+Content_Text = "☆ AnimationId it's auto Saved into This file Content ☆ \n\n Emote/AnimationId: Auto Listed Below !"
 
 Content_newData = nil
 Count_Index = 0
-Fix = 2
+Fix = 3
 Its_InProgress = false
 ItsOnFocused_StatusId = false
 ShowID_onTextBox = ""
@@ -124,7 +124,7 @@ function Read2Load_Content()
     if isfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name) then
         Content_Text = readfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name)
         local LineInsideContents = {}
-        for LineInsideContent in string.gmatch(Content_Folder, "([^\n]*)\n?") do
+        for LineInsideContent in string.gmatch(Content_Text, "([^\n]*)\n?") do
             table.insert(LineInsideContents, LineInsideContent)
         end
         Count_Index = #LineInsideContents
