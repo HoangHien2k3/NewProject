@@ -138,7 +138,7 @@ function GetCurrentEmotes_toSAVE(his)
     GetAnims_Id(his)
     Write2Save_Content()
     task.wait(0.5)
-    Read2Load_Content()
+    -- Read2Load_Content()
     print(Content_Text)
 end
 
