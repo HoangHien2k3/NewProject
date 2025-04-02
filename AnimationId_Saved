@@ -108,12 +108,12 @@ function Write2Save_Content()
         Content_Text = Content_Text .. "\n" .. "Animation Id[" .. Count_Index .. "]: " .. Content_newData
         if not isfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name) and isfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII) then
             warn(HoangHienScript_Folder .. ": not found file to save...")
-            writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII, "Nothing.")
+            -- writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII, "Nothing.")
             writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name, "Nothing too =))")
             warn(HoangHienScript_Folder .. ": create 2 new file 1 is .json other is .txt \n saved in my folder exist in your client folder :)")
         else
             warn(HoangHienScript_Folder .. ": found saved file !")
-            writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII, "Nothing.")
+            -- writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII, "Nothing.")
             writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name, Content_Text)
             warn(HoangHienScript_Folder .. ": updated save !")
         end
