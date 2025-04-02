@@ -1,0 +1,236 @@
+-- × AnimationId Saved: Make by HoangHien × --
+local _CG, _PLRS, _RunS, _MKS, _PLR, _SG, _MainF, _CopiesToSaved, _StatusId
+local _Default, _HiddenCommands, HoangHienScript_Folder, Content_Folder, Content_Name, Content_Text, ContentName_CheckerII, Count_Index, IntCount_Index
+local Content_newData, Fix, Its_InProgress, ItsOnFocused_StatusId, ShowID_onTextBox
+
+_CG = game:GetService("CoreGui")
+_PLRS = game:GetService("Players")
+_RunS = game:GetService("RunService")
+_MKS = game:GetService("MarketplaceService")
+
+_PLR = _PLRS.LocalPlayer
+
+local Black, White, Red, Green, Blue, Purple, Yellow, Skyblue = Color3.new(0, 0, 0), Color3.new(1, 1, 1), Color3.new(1, 0, 0), Color3.new(0, 1, 0), Color3.new(0, 0, 1), Color3.new(1, 0, 1), Color3.new(1, 1, 0), Color3.new(0, 1, 1)
+_Default = {
+    0.5,
+    Black,
+    "SAVE",
+    "",
+    "× AnimationId ×"
+}
+
+_HiddenCommands = {
+    "resetfile",
+    "showconsole",
+    "delfolder"
+}
+
+HoangHienScript_Folder = "HoangHien_Script"
+Content_Folder = "Animations"
+ContentName_CheckerII = "<+" .. game.GameId .. "<×" .. game.PlaceId .. ">> Content Checker.json"
+Content_Name = "<" .. _PLR.Name .. "> Content.txt"
+Content_Text = "☆ AnimationId it's auto Saved into This file Content ☆ \n Emote/AnimationId: Auto Listed Below !"
+
+Content_newData = nil
+Count_Index = 0
+Fix = 2
+Its_InProgress = false
+ItsOnFocused_StatusId = false
+ShowID_onTextBox = nil
+IntCount_Index = Count_Index
+
+_G.CustomTrans_4Fun, _G.CustomColor3_4Fun, _G.CustomButton_Text = {}, {}, {}
+
+-- × main
+
+if not isfolder(HoangHienScript_Folder) then
+    warn(HoangHienScript_Folder .. ": I'm not founded my folder name exist in your client folder, so i gonna create for u one... \n it's used for storage script data *thinghy* or script logs.")
+    makefolder(HoangHienScript_Folder)
+    if not isfolder(HoangHienScript_Folder .. "/" .. Content_Folder) then
+        warn(HoangHienScript_Folder .. ": hmm even this folder does not ever exist... ahh forget thst, i'mma create a new folder in here too !")
+        makefolder(HoangHienScript_Folder .. "/" .. Content_Folder)
+    else
+        warn(HoangHienScript_Folder .. ": nicee")
+    end
+    else
+    warn(HoangHienScript_Folder .. ": oh !")
+end
+
+_SG = Instance.new("ScreenGui", _CG)
+_MainF = Instance.new("Frame", _SG)
+_CopiesToSaved = Instance.new("TextButton", _MainF)
+_StatusId = Instance.new("TextBox", _MainF)
+
+function _MB1C(Name, Scripts)
+    Name.MouseButton1Click:Connect(function()
+        Scripts()
+    end)
+end
+
+function _FocusLost(Name, Vr, Scripts)
+    Name.FocusLost:Connect(function(Vr)
+        if Vr then
+            Scripts()
+        end
+    end)
+end
+
+function _AddUIC(NP, R)
+    local NameUIC = Instance.new("UICorner", NP)
+    NameUIC.CornerRadius = UDim.new(R, 0)
+end
+
+function GetAnims_Id(whoits)
+    for no_one, whonow in pairs(whoits.Character:FindFirstChildWhichIsA("Humanoid"):GetPlayingAnimationTracks()) do
+        local ItsA_AnimsID = whonow.Animation.AnimationId
+        local Asset_ID_Ok = ItsA_AnimsID:find("rbxassetid://") and ItsA_AnimsID:match("%d+")
+        
+        if not string.find(ItsA_AnimsID, "507768375") and not string.find(ItsA_AnimsID, "180435571") then
+            if Asset_ID_Ok then
+                local success, result = pcall(function()
+                    return _MKS:GetProductInfo(tonumber(Asset_ID_Ok)).Name
+                end)
+                local name = success and result or "failed to get name"
+                Content_newData = "Name Animation InGame: " .. name .. ", ID = 《" .. ItsA_AnimsID .. "》."
+                ShowID_onTextBox = tonumber(ItsA_AnimsID)
+            else
+                Content_newData = "ID = 《" .. ItsA_AnimsID .. "》."
+                ShowID_onTextBox = tonumber(ItsA_AnimsID)
+            end
+        end
+    end
+end
+
+function Write2Save_Content()
+    pcall(function()
+        Content_Text = Content_Text .. "\n" .. "Animation Id[" .. Count_Index .. "]: " .. Content_newData
+        if not isfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name) and isfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII) then
+            warn(HoangHienScript_Folder .. ": not found file to save...")
+            writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII, "Nothing.")
+            writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name, "Nothing too =))")
+            warn(HoangHienScript_Folder .. ": create 2 new file 1 is .json other is .txt \n saved in my folder exist in your client folder :)")
+        else
+            warn(HoangHienScript_Folder .. ": found saved file !")
+            writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. ContentName_CheckerII, "Nothing.")
+            writefile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name, Content_Text)
+            warn(HoangHienScript_Folder .. ": updated save !")
+        end
+    end)
+end
+
+function Read2Load_Content()
+    if isfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name) then
+        Content_Text = readfile(HoangHienScript_Folder .. "/" .. Content_Folder .. "/" .. Content_Name)
+        local LineInsideContents = {}
+        for LineInsideContent in string.gmatch(Content_Folder, "([^\n]*)\n?") do
+            table.insert(LineInsideContents, LineInsideContent)
+        end
+        Count_Index = #LineInsideContents
+        Count_Index = Count_Index - Fix
+        print("Data lines: " .. Count_Index)
+    else
+        Write2Save_Content()
+    end
+end
+
+function GetCurrentEmotes_toSAVE(his)
+    Count_Index = Count_Index + 1
+    GetAnims_Id(his)
+    Write2Save_Content()
+    task.wait(0.5)
+    Read2Load_Content()
+    print(Content_Text)
+end
+
+_MainF.BackgroundTransparency = _G.CustomTrans_4Fun[1] or _Default[1]
+_MainF.BackgroundColor3 = _G.CustomColor3_4Fun[1] or _Default[2]
+_MainF.Position = UDim2.new(0.8, 0, -0.1, 0)
+_MainF.Size = UDim2.new(0.2, 0, 0.08, 0)
+_MainF.Active = true
+_MainF.Draggable = true
+_MainF.Visible = true
+
+_CopiesToSaved.BackgroundTransparency = _G.CustomTrans_4Fun[2] or _Default[1]
+_CopiesToSaved.BackgroundColor3 = _G.CustomColor3_4Fun[2] or _Default[2]
+_CopiesToSaved.Position = UDim2.new(0.6, 0, 0.1, 0)
+_CopiesToSaved.Size = UDim2.new(0.3, 0, 0.8, 0)
+_CopiesToSaved.TextScaled = true
+_CopiesToSaved.TextSize = 12
+_CopiesToSaved.TextColor3 = White
+_CopiesToSaved.Font = Enum.Font.Code
+_CopiesToSaved.Text = _G.CustomButton_Text[1] or _Default[3]
+_CopiesToSaved.Visible = true
+
+_StatusId.BackgroundTransparency = _G.CustomTrans_4Fun[3] or _Default[1]
+_StatusId.BackgroundColor3 = _G.CustomColor3_4Fun[3] or _Default[2]
+_StatusId.Position = UDim2.new(0.02, 0, 0.1, 0)
+_StatusId.Size = UDim2.new(0.5, 0, 0.8, 0)
+_StatusId.TextScaled = true
+_StatusId.TextSize = 12
+_StatusId.TextColor3 = Yellow
+_StatusId.Font = Enum.Font.Code
+_StatusId.Text = _G.CustomButton_Text[2] or _Default[4]
+_StatusId.ClearTextOnFocus = true
+_StatusId.PlaceholderText = _G.CustomButton_Text[3] or _Default[5]
+_StatusId.Visible = true
+
+local intBoxText = _StatusId.Text
+_MB1C(_CopiesToSaved, function()
+    if not Its_InProgress then
+        Its_InProgress = true
+        GetCurrentEmotes_toSAVE(_PLR)
+        _StatusId.Text = ShowID_onTextBox
+        task.wait(2)
+        _StatusId.Text = "SUCCESS :)"
+        _StatusId.TextColor3 = Purple
+        wait(1)
+        _StatusId.Text = intBoxText
+        _StatusId.TextColor3 = Yellow
+        Its_InProgress = false
+    else
+        warn(HoangHienScript_Folder .. ": wait a moment before do it again !")
+    end
+end)
+
+local IntPHText = _StatusId.PlaceholderText
+_FocusLost(_StatusId, enterPressed, function()
+    ItsOnFocused_StatusId = false
+    -- hmm
+end)
+
+_StatusId.Focused:Connect(function()
+    ItsOnFocused_StatusId = true
+end)
+
+_RunS.RenderStepped:Connect(function(deltaTime)
+    if ItsOnFocused_StatusId then
+        local Entered_Commands, Matching_Commands
+        Entered_Commands = _StatusId.Text:lower()
+        Matching_Commands = nil
+        
+        for Index, A_Commands in ipairs(_HiddenCommands) do
+            if A_Commands:sub(1, #Entered_Commands):lower() == Entered_Commands then
+                Matching_Commands = A_Commands
+                break
+            end
+        end
+        
+        if Matching_Commands then
+            _StatusId.PlaceholderText = Matching_Commands
+            _StatusId.Text = Matching_Commands
+        else
+            _StatusId.PlaceholderText = "× Huh what's it ? ×"
+        end
+    end
+end)
+
+_AddUIC(_MainF, 0.2)
+_AddUIC(_CopiesToSaved, 0.2)
+_AddUIC(_StatusId, 0.2)
+
+task.wait()
+Read2Load_Content()
+
+print(HoangHienScript_Folder .. ": Scripts Loaded.")
+
+-- delfolder("HoangHien_Script") -- for remove my own folder.... :)
