@@ -92,10 +92,10 @@ function GetAnims_Id(whoits)
                 end)
                 local name = success and result or "failed to get name"
                 Content_newData = "Name Animation InGame: " .. name .. ", ID = 《" .. ItsA_AnimsID .. "》."
-                ShowID_onTextBox = tonumber(ItsA_AnimsID)
+                ShowID_onTextBox = "ID: " .. ItsA_AnimsID
             else
                 Content_newData = "ID = 《" .. ItsA_AnimsID .. "》."
-                ShowID_onTextBox = tonumber(ItsA_AnimsID)
+                ShowID_onTextBox = "ID: " .. ItsA_AnimsID
             end
         end
     end
