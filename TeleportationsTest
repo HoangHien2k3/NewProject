@@ -1,0 +1,204 @@
+-- Teleportation/Tweening UI by: HoangHien --
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local CoreGui = game:GetService("CoreGui")
+
+local localPlayer = Players.LocalPlayer
+local rdValue = math.random(1, 9999)
+local _sfCanvasmain, _bHeight, _bPadding = 0, 10, 2
+local playerButtons = {}
+
+local _mSG = Instance.new("ScreenGui", CoreGui)
+local _mFrame = Instance.new("Frame", _mSG)
+local _mSFrame = Instance.new("ScrollingFrame", _mFrame)
+local _msTextLB = Instance.new("TextLabel", _mFrame)
+
+_mFrame.Name = "HolderFrame_TeleportCFr"
+_mFrame.BackgroundTransparency = 0.5
+_mFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_mFrame.Position = UDim2.new(0.6, 0, 0.1, 0)
+_mFrame.Size = UDim2.new(0.25, 0, 0.45, 0)
+_mFrame.Active = true
+_mFrame.Draggable = true
+_mFrame.Visible = true
+
+_mSFrame.Name = "ContainerButtons_TeleportCFr"
+_mSFrame.BackgroundTransparency = 0.5
+_mSFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_mSFrame.Position = UDim2.new(0.02, 0, 0, 0.05)
+_mSFrame.Size = UDim2.new(0.96, 0, 0.85, 0)
+_mSFrame.ScrollBarThickness = 0.1
+_mSFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
+_mSFrame.Visible = true
+
+_msTextLB.Name = "CreditNCount_TeleportCFr"
+_msTextLB.BackgroundTransparency = 0.5
+_msTextLB.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_msTextLB.Position = UDim2.new(0, 0, -0.15, 0)
+_msTextLB.Size = UDim2.new(0.49, 0, 0.1, 0)
+_msTextLB.TextScaled = true
+_msTextLB.TextSize = 9
+_msTextLB.TextColor3 = Color3.fromRGB(0, 255, 0)
+_msTextLB.Font = Enum.Font.Code
+_msTextLB.Text = ""
+_msTextLB.Visible = true
+
+local function AddUIC(_name, radius)
+    local ui = Instance.new("UICorner", _name)
+    ui.CornerRadius = UDim.new(radius, 0)
+end
+
+local function _MB1C(_name, scripts)
+    _name.MouseButton1Click:Connect(function()
+        scripts()
+    end)
+end
+
+local activeTweening = false
+
+local function RestoreCharacterState(char)
+    local hrp = char and char:FindFirstChild("HumanoidRootPart")
+    if hrp then
+        for _, child in ipairs(hrp:GetChildren()) do
+            if child:IsA("BodyVelocity") then
+                child:Destroy()
+            end
+        end
+    end
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = true
+        end
+    end
+end
+
+local function WatchCharacter()
+    local char = localPlayer.Character or localPlayer.CharacterAdded:Wait()
+    local humanoid = char:WaitForChild("Humanoid")
+    humanoid.Died:Connect(function()
+        if activeTweening then
+            RestoreCharacterState(char)
+        end
+    end)
+end
+
+local function TweenToTarget(pos)
+    local char = localPlayer.Character
+    if not char then return end
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    if not hrp then return end
+
+    activeTweening = true
+
+    local bv = Instance.new("BodyVelocity")
+    bv.Velocity = Vector3.zero
+    bv.MaxForce = Vector3.new(1, 1, 1) * 1e9
+    bv.Parent = hrp
+
+    for _, part in ipairs(char:GetDescendants()) do
+        if part:IsA("BasePart") then
+            part.CanCollide = false
+        end
+    end
+
+    local dist = (hrp.Position - pos).Magnitude
+    local tweenTime = dist / 300
+    local tween = TweenService:Create(hrp, TweenInfo.new(tweenTime, Enum.EasingStyle.Linear), {CFrame = CFrame.new(pos)})
+    tween:Play()
+    tween.Completed:Wait()
+
+    RestoreCharacterState(char)
+    activeTweening = false
+end
+
+local function TeleportToPlayer(plr)
+    local char = localPlayer.Character
+    local targetChar = plr.Character
+    if not char or not targetChar then return end
+
+    local hrp = char:FindFirstChild("HumanoidRootPart")
+    local targetHrp = targetChar:FindFirstChild("HumanoidRootPart")
+    if not hrp or not targetHrp then return end
+
+    local targetPos = targetHrp.Position + Vector3.new(0, 3, 0)
+    local oldPos = hrp.Position
+
+    hrp.CFrame = CFrame.new(targetPos)
+    task.wait(0.2)
+
+    if (hrp.Position - targetPos).Magnitude > 10 then
+        TweenToTarget(targetPos)
+    end
+end
+
+local function AddPlayerButton(plr)
+    local btn = Instance.new("TextButton", _mSFrame)
+    btn.Name = "_TeleportBtn_" .. plr.Name
+    btn.BackgroundTransparency = 0
+    btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    btn.Position = UDim2.new(0.02, 0, 0, _sfCanvasmain + _bPadding)
+    btn.Size = UDim2.new(0.96, 0, 0, _bHeight)
+    btn.TextScaled = true
+    btn.TextSize = 9
+    btn.TextColor3 = Color3.fromRGB(255, 255, 255)
+    btn.Font = Enum.Font.Code
+    btn.Text = "Goto: " .. plr.Name
+    btn.Visible = true
+    AddUIC(btn, 0.2)
+    _MB1C(btn, function()
+        TeleportToPlayer(plr)
+    end)
+    playerButtons[plr] = btn
+end
+
+local function RefreshPlayerList()
+    for plr, btn in pairs(playerButtons) do
+        if not Players:FindFirstChild(plr.Name) or plr == localPlayer then
+            btn:Destroy()
+            playerButtons[plr] = nil
+        end
+    end
+
+    _sfCanvasmain = 0
+    local total = 0
+
+    for _, plr in ipairs(Players:GetPlayers()) do
+        if plr ~= localPlayer and not playerButtons[plr] then
+            AddPlayerButton(plr)
+        end
+    end
+
+    for _, btn in pairs(playerButtons) do
+        btn.Position = UDim2.new(0.02, 0, 0, _sfCanvasmain + _bPadding)
+        _sfCanvasmain = _sfCanvasmain + _bHeight + _bPadding
+        total += 1
+    end
+
+    _msTextLB.Text = "Credit: HoangHien, [" .. total .. "] Players"
+    _mSFrame.CanvasSize = UDim2.new(0, 0, 0, _sfCanvasmain)
+end
+
+task.spawn(function()
+    if game:IsLoaded() then
+        AddUIC(_mFrame, 0.1)
+        AddUIC(_mSFrame, 0.2)
+        AddUIC(_msTextLB, 0.2)
+        WatchCharacter()
+        RefreshPlayerList()
+    end
+end)
+
+localPlayer.CharacterAdded:Connect(function()
+    task.wait(1)
+    WatchCharacter()
+end)
+
+Players.PlayerAdded:Connect(function()
+    task.wait(1)
+    RefreshPlayerList()
+end)
+
+Players.PlayerRemoving:Connect(function()
+    task.wait(1)
+    RefreshPlayerList()
+end)
