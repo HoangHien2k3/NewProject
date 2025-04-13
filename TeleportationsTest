@@ -5,8 +5,9 @@ local CoreGui = game:GetService("CoreGui")
 
 local localPlayer = Players.LocalPlayer
 local rdValue = math.random(1, 9999)
-local _sfCanvasmain, _bHeight, _bPadding = 0, 10, 2
+local _sfCanvasmain, _bHeight, _bPadding, DefaultConfigs = 0, 10, 2, 0.5
 local playerButtons = {}
+_G.Configs_UI = {0.5, 0.5, 0.5}
 
 local _mSG = Instance.new("ScreenGui", CoreGui)
 local _mFrame = Instance.new("Frame", _mSG)
@@ -14,8 +15,8 @@ local _mSFrame = Instance.new("ScrollingFrame", _mFrame)
 local _msTextLB = Instance.new("TextLabel", _mFrame)
 
 _mFrame.Name = "HolderFrame_TeleportCFr"
-_mFrame.BackgroundTransparency = 0.5
-_mFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_mFrame.BackgroundTransparency = _G.Configs_UI[1] or DefaultConfigs
+_mFrame.BackgroundColor3 = _G.Configs_UI[4] or Color3.fromRGB(0, 0, 0)
 _mFrame.Position = UDim2.new(0.6, 0, 0.1, 0)
 _mFrame.Size = UDim2.new(0.25, 0, 0.45, 0)
 _mFrame.Active = true
@@ -23,17 +24,17 @@ _mFrame.Draggable = true
 _mFrame.Visible = true
 
 _mSFrame.Name = "ContainerButtons_TeleportCFr"
-_mSFrame.BackgroundTransparency = 0.5
-_mSFrame.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
-_mSFrame.Position = UDim2.new(0.02, 0, 0, 0.05)
+_mSFrame.BackgroundTransparency = _G.Configs_UI[2] or DefaultConfigs
+_mSFrame.BackgroundColor3 = _G.Configs_UI[5] or Color3.fromRGB(0, 0, 0)
+_mSFrame.Position = UDim2.new(0.02, 0, 0.02, 0.05)
 _mSFrame.Size = UDim2.new(0.96, 0, 0.85, 0)
 _mSFrame.ScrollBarThickness = 0.1
 _mSFrame.CanvasSize = UDim2.new(0, 0, 0, 0)
 _mSFrame.Visible = true
 
 _msTextLB.Name = "CreditNCount_TeleportCFr"
-_msTextLB.BackgroundTransparency = 0.5
-_msTextLB.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+_msTextLB.BackgroundTransparency = _G.Configs_UI[3] or DefaultConfigs
+_msTextLB.BackgroundColor3 = _G.Configs_UI[6] or Color3.fromRGB(0, 0, 0)
 _msTextLB.Position = UDim2.new(0, 0, -0.15, 0)
 _msTextLB.Size = UDim2.new(0.49, 0, 0.1, 0)
 _msTextLB.TextScaled = true
@@ -134,8 +135,8 @@ end
 local function AddPlayerButton(plr)
     local btn = Instance.new("TextButton", _mSFrame)
     btn.Name = "_TeleportBtn_" .. plr.Name
-    btn.BackgroundTransparency = 0
-    btn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+    btn.BackgroundTransparency = _G.Configs_UI[7] or 0
+    btn.BackgroundColor3 = _G.Configs_UI[8] or Color3.fromRGB(0, 0, 0)
     btn.Position = UDim2.new(0.02, 0, 0, _sfCanvasmain + _bPadding)
     btn.Size = UDim2.new(0.96, 0, 0, _bHeight)
     btn.TextScaled = true
@@ -180,9 +181,9 @@ end
 
 task.spawn(function()
     if game:IsLoaded() then
-        AddUIC(_mFrame, 0.1)
-        AddUIC(_mSFrame, 0.2)
-        AddUIC(_msTextLB, 0.2)
+        AddUIC(_mFrame, 0.02)
+        AddUIC(_mSFrame, 0.22)
+        AddUIC(_msTextLB, 0.24)
         WatchCharacter()
         RefreshPlayerList()
     end
