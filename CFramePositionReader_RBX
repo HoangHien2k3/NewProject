@@ -1,0 +1,154 @@
+-- Position Reader/Save Storage: by HoangHien --
+local _CG, _StG
+local _SG, _Fr, _PositionName, _AddPosition
+local _Content, _newContent
+
+_CG = game:GetService("CoreGui")
+_StG = game:GetService("StarterGui")
+
+_SG = Instance.new("ScreenGui", _CG)
+_Fr = Instance.new("Frame", _SG)
+_PositionName = Instance.new("TextBox", _Fr)
+_AddPosition = Instance.new("TextButton", _Fr)
+
+_SG.Name = "CFramePosition_HH"
+
+_Fr.Name = "Cointainer_HH"
+_PositionName.Name = "PosName_HH"
+_AddPosition.Name = "AddPos_HH"
+
+_Content = "HoangHien Script: Position Saved List\nEditting X and C as anything you want like example:\nChanged ' x ' to '_Function(' !."
+
+_Fr.BackgroundTransparency = 0.5
+_Fr.BackgroundColor3 = Color3.new(0, 0, 0)
+_Fr.Position = UDim2.new(0.4, 0, 0.45, 0)
+_Fr.Size = UDim2.new(0.25, 0, 0.06, 0)
+_Fr.Active = true
+_Fr.Draggable = true
+_Fr.Visible = true
+
+_PositionName.BackgroundTransparency = 0.5
+_PositionName.BackgroundColor3 = Color3.new(0, 0, 0)
+_PositionName.Position = UDim2.new(0.025, 0, 0.025, 0)
+_PositionName.Size = UDim2.new(0.6, 0, 0.92, 0)
+_PositionName.TextScaled = true
+_PositionName.TextSize = 9
+_PositionName.TextColor3 = Color3.new(1, 1, 1)
+_PositionName.Font = Enum.Font.Code
+_PositionName.Text = ""
+_PositionName.PlaceholderText = "Input Name"
+_PositionName.ClearTextOnFocus = true
+_PositionName.Visible = true
+
+_AddPosition.BackgroundTransparency = 0.5
+_AddPosition.BackgroundColor3 = Color3.new(0, 0, 0)
+_AddPosition.Position = UDim2.new(0.6275, 0, 0.025, 0)
+_AddPosition.Size = UDim2.new(0.3, 0, 0.92, 0)
+_AddPosition.TextScaled = true
+_AddPosition.TextSize = 9
+_AddPosition.TextColor3 = Color3.new(1, 1, 1)
+_AddPosition.Font = Enum.Font.Code
+_AddPosition.Text = "Save"
+_AddPosition.Visible = true
+
+function _UICorner(_target, RAD)
+    local UIC_new = Instance.new("UICorner", _target)
+    UIC_new.CornerRadius = UDim.new(RAD, 0)
+end
+
+function _mb1c(_target, scripts)
+    _target.MouseButton1Click:Connect(function()
+        pcall(function()
+            scripts()
+        end)
+    end)
+end
+
+function _writingSave()
+    local success, result = pcall(function()
+        if isfile("HoangHien_Script/Storage/PositionSaved.txt") then
+            _Content = readfile("HoangHien_Script/Storage/PositionSaved.txt")
+        end
+        _Content = _Content .. "\n" .. _newContent
+        writefile("HoangHien_Script/Storage/PositionSaved.txt", _Content)
+    end)
+    if success then
+        print("saved!")
+    else
+        print("unsaved!\nResult: " .. result)
+    end
+end
+
+function _readingSave()
+    local success, result = pcall(function()
+        _Content = readfile("HoangHien_Script/Storage/PositionSaved.txt")
+    end)
+    if success then
+        print("successfully read!")
+    else
+        print("unsuccessfully read!\nResult: " .. result)
+    end
+end
+
+local oldtitle = _PositionName.PlaceholderText
+local oldcolor3 = _PositionName.PlaceholderColor3
+function ChangedTitle()
+    _PositionName.PlaceholderText = "Err: Requires a name to countinued!"
+    _PositionName.PlaceholderColor3 = Color3.new(1, 0, 0)
+    task.wait(1.25)
+    _PositionName.PlaceholderText = oldtitle
+    _PositionName.PlaceholderColor3 = oldcolor3
+end
+
+_UICorner(_Fr, 0.2)
+_UICorner(_PositionName, 0.25)
+_UICorner(_AddPosition, 0.25)
+
+if game:IsLoaded() then
+    if not isfolder("HoangHien_Script") then
+        makefolder("HoangHien_Script")
+        print("not exist my folder, create new!")
+    else
+        print("folder exist, first check!")
+    end
+
+    if not isfolder("HoangHien_Script/Storage") then
+        makefolder("HoangHien_Script/Storage")
+        print("not exist storage folder, create new!")
+    else
+        print("folder exist, seconds check!")
+    end
+
+    if not isfile("HoangHien_Script/Storage/PositionSaved.txt") then
+        writefile("HoangHien_Script/Storage/PositionSaved.txt", _Content)
+        print("not found txt file, create new content!")
+    else
+        print("good job, file exist!")
+    end
+
+    _readingSave()
+
+    _mb1c(_AddPosition, function()
+        if _PositionName.Text == "" then
+            _PositionName.Text = ""
+            ChangedTitle()
+        else
+            local newestPLRPos = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.Position
+            local newestName = _PositionName.Text
+            local function roundVec3(vec)
+                local function r(n) return tonumber(string.format("%.2f", n)) end
+                return Vector3.new(r(vec.X), r(vec.Y), r(vec.Z))
+            end
+            local roundedPos = roundVec3(newestPLRPos)
+            _newContent = string.format("X(%.2f, %.2f, %.2f)C, roundedPos.X, roundedPos.Y, roundedPos.Z)
+            _writingSave()
+            _PositionName.Text = ""
+            _readingSave()
+            _StG:SetCore("SendNotification", {
+                Title = "Position Saver",
+                Text = "Pos: " .. string.format("X: %.2f, Y: %.2f, Z: %.2f", roundedPos.X, roundedPos.Y, roundedPos.Z) .. "\n -- Saved Name: " .. newestName .. " --",
+                Duration = 2,
+            })
+        end
+    end)
+end
