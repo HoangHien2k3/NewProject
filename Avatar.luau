@@ -32,10 +32,10 @@ _CurrentOutfits, _Id, _Stuff = {
     ["BlackRed Hair"] = {
         ["Head"] = {
             ["MeshId"] = {"rbxassetid://18653383639"},
-            ["TextureId"] = {"http://www.roblox.com/asset/?id=18653323611"}
-            ["CF_1"] = {CFrame.new(0, -0.8, 0)},
+            ["TextureId"] = {"http://www.roblox.com/asset/?id=18653323611"},
+            ["CF_1"] = {CFrame.new(0, -0.2, 0)},
             ["CF_2"] = {CFrame.Angles(0, 0, 0)},
-            ["V3"] = {Vector3.new(0.78, 0.78, 0.78)}
+            ["V3"] = {Vector3.new(1, 1, 1)}
         }
     }
 }
@@ -97,7 +97,7 @@ function _ChangedAnimations(...)
     _Animation = _Player.Character.Animate
     _Animation.idle.Animation1.AnimationId = _Id["Type"][1] .. _x[1]
     _Animation.idle.Animation2.AnimationId = _Id["Type"][1] .. _x[2]
-    _Animation.walk.RunAnim.AnimationId = _Id["Type"][1] .. _x[3]
+    _Animation.walk.WalkAnim.AnimationId = _Id["Type"][1] .. _x[3]
     _Animation.run.RunAnim.AnimationId = _Id["Type"][1] .. _x[4]
     _Animation.jump.JumpAnim.AnimationId = _Id["Type"][1] .. _x[5]
     _Animation.climb.ClimbAnim.AnimationId = _Id["Type"][1] .. _x[6]
