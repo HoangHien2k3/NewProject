@@ -4,8 +4,9 @@ local _Workspace, _Players
 _Workspace = game:GetService("Workspace")
 _Players = game:GetService("Players")
 
-local _Player, _CurrentOutfits, _Id, _Stuff
+local _Player, _Animation, _CurrentOutfits, _Id, _Stuff
 _Player = _Players.LocalPlayer
+_Animation = _Player.Character.Animate
 _CurrentOutfits, _Id, _Stuff = {
     ["Shirt"] = function()
         return _Player.Character and _Player.Character:FindFirstChild("Shirt")
@@ -15,7 +16,8 @@ _CurrentOutfits, _Id, _Stuff = {
     end
 }, {
     ["Shirt"] = {"http://www.roblox.com/asset/?id=14658350086"},
-    ["Pants"] = {"http://www.roblox.com/asset/?id=7359562576"}
+    ["Pants"] = {"http://www.roblox.com/asset/?id=7359562576"},
+    ["Type"] = {"http://www.roblox.com/asset/?id=", "rbxassetid://"}
 }, {
     ["Fluffy Ears"] = {
         ["Head"] = {
@@ -80,6 +82,24 @@ function _BasedInTable(_table)
     end
 end
 
+function _ChangedAnimations(...)
+    local _x = {...}
+    _Animation = _Player.Character.Animate
+    _Animation.idle.Animation1.AnimationId = _Id["Type"][1] .. _x[1]
+    _Animation.idle.Animation2.AnimationId = _Id["Type"][1] .. _x[2]
+    _Animation.walk.WalkAnim.AnimationId = _Id["Type"][1] .. _x[3]
+    _Animation.run.RunAnim.AnimationId = _Id["Type"][1] .. _x[4]
+    _Animation.jump.JumpAnim.AnimationId = _Id["Type"][1] .. _x[5]
+    _Animation.climb.ClimbAnim.AnimationId = _Id["Type"][1] .. _x[6]
+    _Animation.fall.FallAnim.AnimationId = _Id["Type"][1] .. _x[7]
+    --_Animation.swim.SwimAnim.AnimationId = _Id["Type"][1] .. _x[8]
+    if _Player.Character.Humanoid.Sit == true then
+        _Player.Character.Humanoid.Jump = true
+    else
+        _Player.Character.Humanoid.Jump = false
+    end
+end
+
 function _Avatar(...)
     local _a = {...}
     _Player:ClearCharacterAppearance()
@@ -88,6 +108,7 @@ function _Avatar(...)
     _ClassicOutfitChange("Pants", 1)
     --_PartInstance()
     _BasedInTable(_Stuff)
+    --_ChangedAnimations()
 end
 
 _Avatar(0.1)
