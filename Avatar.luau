@@ -21,9 +21,9 @@ _CurrentOutfits, _Id, _Stuff = {
         ["Head"] = {
             ["MeshId"] = {"rbxassetid://17618202202"},
             ["TextureId"] = {"rbxassetid://17411092404"},
-            ["CF_1"] = {CFrame.new(8.65851391, 0.599999905, -0.000272244215)},
+            ["CF_1"] = {CFrame.new(0, -0.5, 0)},
             ["CF_2"] = {CFrame.Angles(0, 0, 0)},
-            ["V3"] = {Vector3.new(1.7924280166625977, 1.097672462463379, 0.8097825050354004)}
+            ["V3"] = {Vector3.new(0.6, 0.6, 0.6)}
         }
     }
 }
