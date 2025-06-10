@@ -4,9 +4,10 @@ local _Workspace, _Players
 _Workspace = game:GetService("Workspace")
 _Players = game:GetService("Players")
 
-local _Player, _Animation, _CurrentOutfits, _Id, _Stuff
+local _Player, _Animation, _Ready, _CurrentOutfits, _Id, _Stuff
 _Player = _Players.LocalPlayer
 _Animation = _Player.Character.Animate
+_Ready = false
 _CurrentOutfits, _Id, _Stuff = {
     ["Shirt"] = function()
         return _Player.Character and _Player.Character:FindFirstChild("Shirt")
@@ -23,6 +24,15 @@ _CurrentOutfits, _Id, _Stuff = {
         ["Head"] = {
             ["MeshId"] = {"rbxassetid://17618202202"},
             ["TextureId"] = {"rbxassetid://17411092404"},
+            ["CF_1"] = {CFrame.new(0, -0.8, 0)},
+            ["CF_2"] = {CFrame.Angles(0, 0, 0)},
+            ["V3"] = {Vector3.new(0.78, 0.78, 0.78)}
+        }
+    },
+    ["BlackRed Hair"] = {
+        ["Head"] = {
+            ["MeshId"] = {"rbxassetid://18653383639"},
+            ["TextureId"] = {"http://www.roblox.com/asset/?id=18653323611"}
             ["CF_1"] = {CFrame.new(0, -0.8, 0)},
             ["CF_2"] = {CFrame.Angles(0, 0, 0)},
             ["V3"] = {Vector3.new(0.78, 0.78, 0.78)}
@@ -87,12 +97,12 @@ function _ChangedAnimations(...)
     _Animation = _Player.Character.Animate
     _Animation.idle.Animation1.AnimationId = _Id["Type"][1] .. _x[1]
     _Animation.idle.Animation2.AnimationId = _Id["Type"][1] .. _x[2]
-    _Animation.walk.WalkAnim.AnimationId = _Id["Type"][1] .. _x[3]
+    _Animation.walk.RunAnim.AnimationId = _Id["Type"][1] .. _x[3]
     _Animation.run.RunAnim.AnimationId = _Id["Type"][1] .. _x[4]
     _Animation.jump.JumpAnim.AnimationId = _Id["Type"][1] .. _x[5]
     _Animation.climb.ClimbAnim.AnimationId = _Id["Type"][1] .. _x[6]
     _Animation.fall.FallAnim.AnimationId = _Id["Type"][1] .. _x[7]
-    --_Animation.swim.SwimAnim.AnimationId = _Id["Type"][1] .. _x[8]
+    _Animation.swim.Swim.AnimationId = _Id["Type"][1] .. _x[8]
     if _Player.Character.Humanoid.Sit == true then
         _Player.Character.Humanoid.Jump = true
     else
@@ -103,12 +113,32 @@ end
 function _Avatar(...)
     local _a = {...}
     _Player:ClearCharacterAppearance()
+    _Ready = true
     task.wait(_a[1])
     _ClassicOutfitChange("Shirt", 1)
     _ClassicOutfitChange("Pants", 1)
     --_PartInstance()
     _BasedInTable(_Stuff)
-    --_ChangedAnimations()
+    _ChangedAnimations("133806214992291", "94970088341563", "10921298616", "18537384940", "18537380791", "10921286911", "18537367238", "10921295495")
 end
 
 _Avatar(0.1)
+
+_Player.CharacterAdded:Connect(function()
+    if _Player.Character and _Player.Character:FindFirstChild("HumanoidRootPart") then
+        local _DisplayName = _Player.DisplayName
+        local _Name = _Player.Name
+        if _Name == _DisplayName then
+            print("Prepare outfits!\nfor master's " .. _Player.DisplayName)
+        else
+            print("Prepare outfits!\nfor master's " .. _Player.DisplayName .. " or it's " .. _Player.Name)
+        end
+        task.wait(1)
+        _Avatar(0.1)
+        if _Ready then
+            print("Reloaded outfits!")
+        else
+            print("Loaded outfits!")
+        end
+    end
+end)
