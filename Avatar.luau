@@ -17,13 +17,13 @@ _CurrentOutfits, _Id, _Stuff = {
     ["Shirt"] = {"http://www.roblox.com/asset/?id=14658350086"},
     ["Pants"] = {"http://www.roblox.com/asset/?id=7359562576"}
 }, {
-    ["Black Hat"] = {
+    ["Fluffy Ears"] = {
         ["Head"] = {
-            ["MeshId"] = {"rbxassetid://5029193842"},
-            ["TextureId"] = {"rbxassetid://5029175990"},
-            ["CF_1"] = {CFrame.new(0, -1, 0)},
+            ["MeshId"] = {"rbxassetid://17618202202"},
+            ["TextureId"] = {"rbxassetid://17411092404"},
+            ["CF_1"] = {CFrame.new(8.65851391, 0.599999905, -0.000272244215)},
             ["CF_2"] = {CFrame.Angles(0, 0, 0)},
-            ["V3"] = {Vector3.new(1, 1, 1)}
+            ["V3"] = {Vector3.new(1.7924280166625977, 1.097672462463379, 0.8097825050354004)}
         }
     }
 }
