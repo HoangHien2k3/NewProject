@@ -30,7 +30,77 @@ function _Main()
                 ["Top"] = {9267183930},
                 ["Bottom"] = {9267089500},
                 ["Side"] = {9267155972},
-                ["PlacingSFX"] = {137280066138423}
+                ["PlacingSFX"] = {137280066138423},
+                ["SeeThrough"] = {0},
+                ["HasVariants"] = {
+                    ["Status"] = {1},
+                    ["Name"] = {"_Grass_Normal"}
+                }
+            }
+        },
+        ["Wood"] = {
+            ["_Wood_Block"] = {
+                ["Top"] = {9359130096},
+                ["Bottom"] = {9359130096},
+                ["Side"] = {9359131807},
+                ["PlacingSFX"] = {8394333801},
+                ["SeeThrough"] = {0},
+                ["HasVariants"] = {
+                    ["Status"] = {0},
+                    ["Name"] = {}
+                }
+            }
+        },
+        ["Plank"] = {
+            ["_Wooden_Plank"] = {
+                ["Top"] = {8676581022},
+                ["Bottom"] = {8676581022},
+                ["Side"] = {8676581022},
+                ["PlacingSFX"] = {8394333801},
+                ["SeeThrough"] = {0},
+                ["HasVariants"] = {
+                    ["Status"] = {0},
+                    ["Name"] = {}
+                }
+            }
+        },
+        ["Stone"] = {
+            ["_Stone_Block"] = {
+                ["Top"] = {8676746437},
+                ["Bottom"] = {8676746437},
+                ["Side"] = {8676746437},
+                ["PlacingSFX"] = {111115402685183},
+                ["SeeThrough"] = {0},
+                ["HasVariants"] = {
+                    ["Status"] = {0},
+                    ["Name"] = {}
+                }
+            }
+        },
+        ["I for got what it's named"] = {
+            ["_Forgotten_One"] = {
+                ["Top"] = {8139086777},
+                ["Bottom"] = {8139086777},
+                ["Side"] = {8139086777},
+                ["PlacingSFX"] = {111115402685183},
+                ["SeeThrough"] = {0},
+                ["HasVariants"] = {
+                    ["Status"] = {0},
+                    ["Name"] = {}
+                }
+            }
+        },
+        ["Glass"] = {
+            ["_Glass_Block"] = {
+                ["Top"] = {11384458772},
+                ["Bottom"] = {11384458772},
+                ["Side"] = {11384458772},
+                ["PlacingSFX"] = {9114603669},
+                ["SeeThrough"] = {1},
+                ["HasVariants"] = {
+                    ["Status"] = {0},
+                    ["Name"] = {}
+                }
             }
         }
     }
@@ -221,7 +291,7 @@ function _Main()
 
         Args[1]:Play()
         _np = Vector3.new(math.floor(_np.X + 0.5), math.floor(_np.Y + 0.5), math.floor(_np.Z + 0.5))
-        _CreatePart(Args[2], true, 0, Color3.fromRGB(255, 255, 255), Enum.Material.Plastic, _np, Args[3], Args[4], Args[5], Args[6], Args[7], Args[8])
+        _CreatePart(Args[2], true, 1, Color3.fromRGB(255, 255, 255), Enum.Material.Plastic, _np, Args[3], Args[4], Args[5], Args[6], Args[7], Args[8])
     end
 
     function _AddTool(...)
