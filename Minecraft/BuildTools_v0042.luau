@@ -32,6 +32,7 @@ function _Main()
                 ["Side"] = {9267155972},
                 ["PlacingSFX"] = {137280066138423},
                 ["SeeThrough"] = {0},
+                ["SideFacing"] = {0},
                 ["HasVariants"] = {
                     ["Status"] = {1},
                     ["Name"] = {"_Grass_Normal"}
@@ -46,9 +47,10 @@ function _Main()
                 ["Side"] = {9359131807},
                 ["PlacingSFX"] = {8394333801},
                 ["SeeThrough"] = {0},
+                ["SideFacing"] = {0},
                 ["HasVariants"] = {
                     ["Status"] = {0},
-                    ["Name"] = {}
+                    ["Name"] = {""}
                 },
                 ["Color"] = {Color3.fromRGB(97, 86, 51)}
             }
@@ -60,9 +62,10 @@ function _Main()
                 ["Side"] = {8676581022},
                 ["PlacingSFX"] = {8394333801},
                 ["SeeThrough"] = {0},
+                ["SideFacing"] = {0},
                 ["HasVariants"] = {
                     ["Status"] = {0},
-                    ["Name"] = {}
+                    ["Name"] = {""}
                 },
                 ["Color"] = {Color3.fromRGB(189, 173, 125)}
             }
@@ -74,23 +77,25 @@ function _Main()
                 ["Side"] = {8676746437},
                 ["PlacingSFX"] = {111115402685183},
                 ["SeeThrough"] = {0},
+                ["SideFacing"] = {0},
                 ["HasVariants"] = {
                     ["Status"] = {0},
-                    ["Name"] = {}
+                    ["Name"] = {""}
                 },
                 ["Color"] = {Color3.fromRGB(122, 122, 120)}
             }
         },
-        ["I for got what it's named"] = {
+        ["I forgot what it's named"] = {
             ["_Forgotten_One"] = {
                 ["Top"] = {8139086777},
                 ["Bottom"] = {8139086777},
                 ["Side"] = {8139086777},
                 ["PlacingSFX"] = {111115402685183},
                 ["SeeThrough"] = {0},
+                ["SideFacing"] = {0},
                 ["HasVariants"] = {
                     ["Status"] = {0},
-                    ["Name"] = {}
+                    ["Name"] = {""}
                 },
                 ["Color"] = {Color3.fromRGB(122, 122, 120)}
             }
@@ -102,9 +107,10 @@ function _Main()
                 ["Side"] = {11384458772},
                 ["PlacingSFX"] = {9114603669},
                 ["SeeThrough"] = {0.99},
+                ["SideFacing"] = {0},
                 ["HasVariants"] = {
                     ["Status"] = {0},
-                    ["Name"] = {}
+                    ["Name"] = {""}
                 },
                 ["Color"] = {Color3.fromRGB(255, 255, 255)}
             }
@@ -229,6 +235,7 @@ function _Main()
         local Args = {...}
         local StringValue = Instance.new("StringValue", Args[1])
         StringValue.Name = Args[2]
+        StringValue.Value = Args[3]
     end
     
     function _CreateDecal(...)
@@ -263,7 +270,10 @@ function _Main()
         _CreateDecal(Part, Enum.NormalId.Back, Args[10])
         _CreateDecal(Part, Enum.NormalId.Left, Args[11])
         _CreateDecal(Part, Enum.NormalId.Right, Args[12])
-        _CreateStringValue(Part, Args[13])
+        print("StringValue, Named: " .. Args[13])
+        if typeof(Args[13]) == "string" then
+            _CreateStringValue(Part, Args[13], "N/A")
+        end
     end
     
     _CheckFolder()
@@ -385,7 +395,7 @@ function _Main()
     function _CreateTool(_s)
         for a, b in pairs(_s) do
             for c, d in pairs(b) do
-                local t, b, s, sfx, trans, colorx, variants
+                local t, b, s, sfx, trans, colorx, variants, variants_added
                 t = d.Top[1]
                 b = d.Bottom[1]
                 s = d.Side[1]
@@ -394,9 +404,14 @@ function _Main()
                 colorx = d.Color[1]
                 variants = d.HasVariants
                 
+                print("Cube_X: " .. c .. ", Variant Numbers: " .. variants["Status"][1])
                 if variants["Status"][1] == 1 then
-                    local variants_added = variants["Name"][1]
+                    variants_added = variants["Name"][1] or "_Empty_Variant"
+                    print("First Check Variant Name: " .. variants_added)
                 end
+                
+                variants_added = variants_added or "N/A"
+                print("Seconds Check Variant Name: " .. variants_added)
                 
                 _AddTool(a, c, t, b, s, s, s, s, sfx, trans, colorx, variants_added)
                 _PlusAddButtonIntoSCROLL(_SrF, a, s, c, t, b, s, s, s, s, trans, colorx, variants_added)
@@ -412,7 +427,6 @@ function _Main()
     _Notify("Minecraft-InRoblox v" .. _CurrentVersion)
 end
 
--- Black Red Hair Outfits --
 loadstring(game:HttpGet("https://raw.githubusercontent.com/HoangHien2k3/NewProject/refs/heads/main/Avatar.luau"))()
 if game:IsLoaded() then
     local ss, err = pcall(_Main)
