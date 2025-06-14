@@ -11,7 +11,7 @@ function _Main()
     _Fr = Instance.new("Frame", _SrG)
     _SrF = Instance.new("ScrollingFrame", _Fr)
 
-    local _CurrentVersion = 0.04
+    local _CurrentVersion = 0.041
     local _RightPos, _BelowPos, _ButtonSize, _CanvasSize
     _RightPos = 0.02
     _BelowPos = 0.002
